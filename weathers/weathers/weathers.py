@@ -20,6 +20,7 @@ def parse_page(url):
             city_td = tds[0]
             if index == 0:
                 city_td = tds[1]
+            #stripped_strings过滤空格空行
             city = list(city_td.stripped_strings)[0]
             # print(city)
             temp_td = tds[-2]
