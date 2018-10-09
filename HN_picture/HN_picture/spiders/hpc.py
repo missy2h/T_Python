@@ -5,7 +5,7 @@ import os
 import scrapy
 
 from HN_picture.items import HnPictureItem
-from scrapy.spiders import Rule
+from scrapy.spiders import Rule, CrawlSpider
 from scrapy.linkextractors import LinkExtractor
 
 all_page_link = [] #存储每个分类的路径
@@ -14,16 +14,17 @@ list = []
 
 trantab = str.maketrans('\/:*?"<>|', 'abcdefghi')
 
-class HpcSpider(scrapy.Spider):
+class HpcSpider(CrawlSpider):
     name = 'hpc'
     allowed_domains = ['www.haoniu520.com']
     start_urls = ['http://www.haoniu520.com/news/list_63.html']
 
     rules = [
-        Rule(LinkExtractor(allow=(r'news/list_63_\[2-4]\.html')), callback='parse')
+        Rule(LinkExtractor(allow=(r'news/list_63_([2-4]).html')), callback='get_parse', follow=True),
+        Rule(LinkExtractor(allow=(r'news/list_63.html')), callback='get_parse', follow=True)
     ]
 
-    def parse(self, response):
+    def get_parse(self, response):
         print('--------开始--------')
         root_path = 'D:/pics'
         d_name = []
